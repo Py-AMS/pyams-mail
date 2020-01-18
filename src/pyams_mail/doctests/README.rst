@@ -10,6 +10,11 @@ This package is composed of a set of utility functions, usable into any Pyramid 
     >>> from pyramid.testing import setUp, tearDown
     >>> config = setUp()
 
+    >>> from pyams_utils import includeme as include_utils
+    >>> include_utils(config)
+    >>> from pyams_mail import includeme as include_mail
+    >>> include_mail(config)
+
 
 HTML messages
 -------------
@@ -69,6 +74,7 @@ It can then be converted to an email message which will be used by a mailer util
     b'<p>This is my message body</p>'
     >>> part.get_charset()
     us-ascii
+
 
 Tests cleanup:
 
