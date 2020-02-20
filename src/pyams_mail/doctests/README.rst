@@ -16,13 +16,54 @@ This package is composed of a set of utility functions, usable into any Pyramid 
     >>> include_mail(config)
 
 
+Text messages
+-------------
+
+A text message is a basic message which provides a unique version of the given text:
+
+    >>> from pyams_mail.message import TextMessage
+    >>> body = 'This is the message body.'
+    >>> message = TextMessage(subject='Text message',
+    ...                       fromaddr='testing@example.com',
+    ...                       toaddr='john.doe@example.com',
+    ...                       text=body)
+
+    >>> message
+    <pyramid_mailer.message.Message object at 0x...>
+    >>> message.validate()
+
+    >>> message.subject
+    'Text message'
+    >>> message.sender
+    'testing@example.com'
+    >>> message.recipients
+    ('john.doe@example.com',)
+    >>> message.body
+    'This is the message body.'
+
+It can then be converted to an email message which will be used by a mailer utility:
+
+    >>> msg = message.to_message()
+    >>> msg
+    <email.mime.nonmultipart.MIMENonMultipart object at 0x...>
+    >>> msg.is_multipart()
+    False
+    >>> msg.get_content_type()
+    'text/plain'
+    >>> sorted(msg.keys())
+    ['Content-Disposition', 'Content-Transfer-Encoding', 'Content-Type', 'From', 'MIME-Version', 'Subject', 'To']
+    >>> payload = msg.get_payload()
+    >>> payload
+    'This=20is=20the=20message=20body.'
+
+
 HTML messages
 -------------
 
 An HTML message is a multipart MIME message which provides HTML and text versions of the same
 test:
 
-    >>> from pyams_mail.message import HTMLMessage, TextMessage
+    >>> from pyams_mail.message import HTMLMessage
     >>> body = '<p>This is my message body</p>'
     >>> message = HTMLMessage(subject='Test message',
     ...                       fromaddr='testing@example.com',
