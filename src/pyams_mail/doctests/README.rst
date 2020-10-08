@@ -8,7 +8,14 @@ Introduction
 This package is composed of a set of utility functions, usable into any Pyramid application.
 
     >>> from pyramid.testing import setUp, tearDown
-    >>> config = setUp()
+    >>> config = setUp(hook_zca=True)
+
+We will need a mailer utility afterwards to test this utility registration:
+
+    >>> config.registry.settings['pyams_mail.mailers'] = 'pyams_smtp.'
+    >>> config.registry.settings['pyams_smtp.name'] = 'PyAMS test mailer'
+    >>> config.registry.settings['pyams_smtp.host'] = 'localhost'
+    >>> config.registry.settings['pyams_smtp.port'] = 25
 
     >>> from pyams_utils import includeme as include_utils
     >>> include_utils(config)
@@ -115,6 +122,16 @@ It can then be converted to an email message which will be used by a mailer util
     b'<p>This is my message body</p>'
     >>> part.get_charset()
     us-ascii
+
+
+Getting mailers
+---------------
+
+Mailers registration can be done from Pyramid configuration file, as shown at the beginning:
+
+    >>> from pyramid_mailer.interfaces import IMailer
+    >>> config.registry.getUtility(IMailer, name='PyAMS test mailer')
+    <pyramid_mailer.mailer.Mailer object at 0x...>
 
 
 Tests cleanup:
