@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.1.0
+-----
+ - removed support for Python < 3.7
+ - updated doctests
+
 1.0.4
 -----
  - updated Gitlab-CI configuration
