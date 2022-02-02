@@ -33,8 +33,9 @@ A text message is a basic message which provides a unique version of the given t
     >>> from pyams_mail.message import TextMessage
     >>> body = 'This is the message body.'
     >>> message = TextMessage(subject='Text message',
-    ...                       fromaddr='testing@example.com',
-    ...                       toaddr='john.doe@example.com',
+    ...                       from_addr='testing@example.com',
+    ...                       to_addr='john.doe@example.com',
+    ...                       reply_to='replyto@example.com',
     ...                       text=body)
 
     >>> message
@@ -60,7 +61,7 @@ It can then be converted to an email message which will be used by a mailer util
     >>> msg.get_content_type()
     'text/plain'
     >>> sorted(msg.keys())
-    ['Content-Disposition', 'Content-Transfer-Encoding', 'Content-Type', 'From', 'MIME-Version', 'Subject', 'To']
+    ['Content-Disposition', 'Content-Transfer-Encoding', 'Content-Type', 'From', 'MIME-Version', 'Reply-To', 'Subject', 'To']
     >>> payload = msg.get_payload()
     >>> payload
     'This=20is=20the=20message=20body.'
@@ -75,8 +76,9 @@ test:
     >>> from pyams_mail.message import HTMLMessage
     >>> body = '<p>This is my message body</p>'
     >>> message = HTMLMessage(subject='Test message',
-    ...                       fromaddr='testing@example.com',
-    ...                       toaddr='john.doe@example.com',
+    ...                       from_addr='testing@example.com',
+    ...                       to_addr='john.doe@example.com',
+    ...                       reply_to='replyto@example.com',
     ...                       html=body)
 
     >>> message
@@ -104,7 +106,7 @@ It can then be converted to an email message which will be used by a mailer util
     >>> msg.get_content_type()
     'multipart/alternative'
     >>> sorted(msg.keys())
-    ['Content-Type', 'From', 'MIME-Version', 'Subject', 'To']
+    ['Content-Type', 'From', 'MIME-Version', 'Reply-To', 'Subject', 'To']
     >>> payload = msg.get_payload()
     >>> payload
     [<...MIMENonMultipart object at 0x...>, <...MIMENonMultipart object at 0x...>]
