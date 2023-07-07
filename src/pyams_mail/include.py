@@ -15,7 +15,8 @@
 This module is used for Pyramid integration
 """
 
-from pyramid_mailer import IMailer, Mailer
+from pyramid_mailer.interfaces import IMailer
+from pyramid_mailer.mailer import DebugMailer, Mailer
 
 
 __docformat__ = 'restructuredtext'
@@ -33,5 +34,9 @@ def include_package(config):
     mailers = settings.get('pyams_mail.mailers')
     if mailers:
         for prefix in mailers.split():
-            config.registry.registerUtility(Mailer.from_settings(settings, prefix), IMailer,
-                                            name=settings['{0}name'.format(prefix)])
+            if settings.get(f'{prefix}mode') == 'debug':
+                config.registry.registerUtility(DebugMailer.from_settings(settings, prefix), IMailer,
+                                                name=settings[f'{prefix}name'])
+            else:
+                config.registry.registerUtility(Mailer.from_settings(settings, prefix), IMailer,
+                                                name=settings[f'{prefix}name'])
