@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.3.0
+-----
+ - added support for debugging mailer
+ - added support for Python 3.10 and 3.11
+
 1.2.0
 -----
  - added argument to messages factories to set Reply-To header
