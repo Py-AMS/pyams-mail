@@ -44,7 +44,8 @@ def html_encode(unicode_data, encoding='utf-8'):
 
 
 def HTMLMessage(subject, from_addr, to_addr, html,
-                text=None, encoding='utf-8', reply_to=None):
+                text=None, encoding='utf-8', reply_to=None,
+                cc=None, bcc=None, extra_headers=None, attachments=None):
     # pylint: disable=invalid-name,too-many-arguments
     """Create a MIME message that will render as HTML or text"""
     html = html_encode(html, encoding).decode(encoding)
@@ -53,7 +54,7 @@ def HTMLMessage(subject, from_addr, to_addr, html,
         text = html_to_text(html)
     if isinstance(to_addr, str):
         to_addr = (to_addr,)
-    headers = {}
+    headers = extra_headers or {}
     if reply_to:
         headers['Reply-To'] = reply_to
     return Message(subject=subject,
@@ -61,19 +62,26 @@ def HTMLMessage(subject, from_addr, to_addr, html,
                    recipients=to_addr,
                    html=html,
                    body=text,
-                   extra_headers=headers)
+                   cc=cc,
+                   bcc=bcc,
+                   extra_headers=headers,
+                   attachments=attachments)
 
 
-def TextMessage(subject, from_addr, to_addr, text, reply_to=None):
+def TextMessage(subject, from_addr, to_addr, text, reply_to=None,
+                cc=None, bcc=None, extra_headers=None, attachments=None):
     # pylint: disable=invalid-name
     """Create a text message"""
     if isinstance(to_addr, str):
         to_addr = (to_addr,)
-    headers = {}
+    headers = extra_headers or {}
     if reply_to:
         headers['Reply-To'] = reply_to
     return Message(subject=subject,
                    sender=from_addr,
                    recipients=to_addr,
                    body=text,
-                   extra_headers=headers)
+                   cc=cc,
+                   bcc=bcc,
+                   extra_headers=headers,
+                   attachments=attachments)
