@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.0.0
+-----
+ - upgraded to Pyramid 2.0
+ - added arguments to messages factories
+
 1.3.0
 -----
  - added support for debugging mailer
